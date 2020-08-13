@@ -1,0 +1,72 @@
+---
+title: "PSTAT 126 final"
+author: "Justin Lee"
+date: "6/7/2020"
+output: pdf_document
+---
+
+
+
+```{r}
+library(readr)
+library(tidyverse)
+library(alr4)
+library(lindia)
+nba <- read_csv("~/school/3. Spring 2020/PSTAT 126 (real)/final project/nba/nba 2018-2019.csv")
+View(nba)
+
+
+
+```
+
+
+
+```{r}
+y = nba$`W/L`
+x1 = nba$PTS
+x2 = nba$`FG%`
+x3 = nba$`3P%`
+x4 = nba$TOV
+x5 = nba$`FT%`
+
+y
+
+pairs(~y+x1+x2+x3+x4+x5,data = nba, main = "Scatterplot Matrix")
+```
+
+
+
+```{r}
+
+mod0 <- lm(y~1)
+mod.all<- lm(y~x1+x2+x3+x4+x5)
+step(mod0, scope = list(lower = mod0, upper= mod.all))
+```
+
+
+
+```{r}
+fit <- lm(y~x1+x3+x4)
+summary(fit)
+res = resid(fit)
+y_hat = fitted(fit)
+plot(y_hat, res, main = "Residual vs. Fit", ylab = "Residuals", xlab = "Fit")
+abline(h = 0, lty = 2)
+
+residualPlot(fit)
+
+qqnorm(res)
+qqline(res, col = 2)
+
+
+```
+
+
+# yes
+# no 
+#yesa 
+
+```{r}
+anova(fit)
+summary(fit)
+```
